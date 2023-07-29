@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <form class="m-3" method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="name" class="form-control" id="user-name" aria-describedby="name">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password">
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">confirmPassword</label>
+            <input type="password" class="form-control" id="confirmPassword">
+        </div>
+        <button type="submit" class="btn btn-primary">Sigup</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        let btn = document.querySelector('.btn')
+        btn.addEventListener('click', async(e) => {
+            console.log(e)
+            e.preventDefault()
+            let email = document.querySelector('#exampleInputEmail1').value
+            let name = document.querySelector('#user-name').value
+            let password = document.querySelector('#password').value
+            let confirmPassword = document.querySelector('#confirmPassword').value
+
+            let resp = await axios.post('/auth/signup', {
+                email,
+                name,
+                password,
+                confirmPassword
+            })
+            console.log(resp)
+        })
+    </script>
+
+</body>
+
+</html>
