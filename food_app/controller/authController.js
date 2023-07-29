@@ -36,7 +36,7 @@ module.exports.protectRoute = async function protectRoute(req, res, next) {
         if (client.includes('Mozilla') == true) {
             res.redirect('/login')
         }
-        res.json({
+        res.status(401).json({
             message: 'Operatiion not allowed'
         })
     }
@@ -49,9 +49,9 @@ module.exports.login = async function login(req, res) {
         if (user) {
             if (data.password === user.password) {
                 const user_id = user['_id']
-                console.log(JWT_KEY)
+                    // console.log(JWT_KEY)
                 const token = jwt.sign({ payload: user_id }, JWT_KEY.JWT_KEY)
-                console.log(token)
+                    // console.log(token)
                 res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 24, secure: true, httpOnly: true })
                 res.json({
                     message: 'Loggin Successful'
@@ -128,13 +128,35 @@ module.exports.resetPassword = async function(req, res) {
     }
 }
 
-module.exports.logout = function(req, res) {
+module.exports.logout = async function(req, res) {
     try {
-        res.clearCookie('token', '', { maxAge: 1 })
-            // window.alert('logout successfully')
-        res.json({
-            message: 'user loggout successfully'
-        })
+        const token = req.cookies.token
+        if (token) {
+            const payload = jwt.verify(token, JWT_KEY.JWT_KEY)
+            if (payload) {
+                const user = await userModel.findById(payload.payload)
+                if (user) {
+                    res.clearCookie('token', '', { maxAge: 1 })
+                        // window.alert('logout successfully')
+                    res.json({
+                        message: 'user loggout successfully',
+                        user: user
+                    })
+                } else {
+                    res.status(400).json({
+                        message: 'user not found'
+                    })
+                }
+            } else {
+                res.status(401).json({
+                    message: 'Operatiion not allowed'
+                })
+            }
+        } else {
+            res.status(401).json({
+                message: 'Operatiion not allowed'
+            })
+        }
     } catch (err) {
         res.json({
             message: err.message

@@ -1,6 +1,4 @@
-const { after } = require('lodash')
 const userModel = require('../models/userModel')
-
 
 module.exports.getCookies = function getCookies(req, res) {
     let cookie = req.cookies
@@ -8,7 +6,6 @@ module.exports.getCookies = function getCookies(req, res) {
     console.log(`cookies  ${cookie},value ${value}`)
     res.send('cookie recieved')
 }
-
 
 module.exports.setCookies = function setCookies(req, res) {
     // res.setHeader('Set-Cookie', 'isLoggedIn = true')
@@ -41,15 +38,15 @@ module.exports.getUsers = async function getUsers(req, res) {
     })
 }
 
-module.exports.postUser = function postUser(req, res) {
-    // console.log(req.body)
-    user = req.body
+// module.exports.postUser = function postUser(req, res) {
+//     // console.log(req.body)
+//     user = req.body
 
-    res.json({
-        message: 'req recieved successfully',
-        user: user
-    })
-}
+//     res.json({
+//         message: 'req recieved successfully',
+//         user: user
+//     })
+// }
 
 module.exports.updateUser = async function updateUser(req, res) {
     const id = req.params.id

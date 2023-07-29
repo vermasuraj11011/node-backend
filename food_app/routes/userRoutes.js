@@ -1,7 +1,7 @@
 const express = require('express')
 const {
     getUsers,
-    postUser,
+    // postUser,
     updateUser,
     deleteUser,
     getCookies,
@@ -19,12 +19,12 @@ const {
 
 
 // user route
-userRoute
-    .route('/')
-    // .get(getUsers)
-    .post(postUser)
-    // .patch(updateUser)
-    // .delete(deleteUser)
+// userRoute
+//     .route('/')
+// .post(postUser)
+// .get(getUsers)
+// .patch(updateUser)
+// .delete(deleteUser)
 
 userRoute
     .route('/getCookies')
@@ -33,7 +33,6 @@ userRoute
 userRoute
     .route('/setCookies')
     .get(setCookies)
-
 
 userRoute
     .route('/logout')
@@ -50,8 +49,6 @@ userRoute
     .patch(updateUser)
     .delete(deleteUser)
 
-
-
 userRoute.use(isAuthorize(['admin']))
 userRoute
     .route('/')
@@ -64,8 +61,5 @@ userRoute
 userRoute
     .route('/reset_password/:token')
     .post(resetPassword)
-
-
-
 
 module.exports = userRoute
