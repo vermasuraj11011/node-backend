@@ -77,7 +77,7 @@ module.exports.updatePlanByID = async function updatePlanByID(req, res) {
 }
 
 module.exports.top3Plan = async function top3Plan(req, res) {
-    const top3Plans = await planModel.find().sort({ rating: -1 })
+    const top3Plans = await planModel.find().sort({ rating: -1 }).limit(3)
     res.json({
         message: "Top 3 plans are:",
         plans: top3Plans

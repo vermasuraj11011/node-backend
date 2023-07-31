@@ -10,10 +10,10 @@ app.use(cookieParser())
 const userRoute = require('./routes/userRoutes')
 const authRoute = require('./routes/authRoutes')
 const planRoute = require('./routes/planRoutes')
+const reviewRoute = require('./routes/reviewRoutes')
 
 // base routes
 app.use('/auth', authRoute)
 app.use('/user', userRoute)
 app.use('/plan', planRoute)
-
-const planModel = require('./models/planModel')
+app.use('/review', reviewRoute)
