@@ -1,6 +1,7 @@
 const userModel = require('../models/userModel.js')
 const jwt = require('jsonwebtoken')
 const secrete = require('../../secrete.js')
+const { sendEmail } = require('../utils/nodemailer.js')
 
 module.exports.isAuthorize = function isAuthorize(roles) {
     return function(req, res, next) {
@@ -84,12 +85,23 @@ module.exports.getSignUp = function getSignUp(req, res) {
 }
 
 module.exports.postSignUp = async function postSignUp(req, res) {
-    let data = req.body
-    const user = await userModel.create(data)
-    res.json({
-        message: 'user  added successfull',
-        data: user
-    })
+    try {
+        let data = req.body
+        const user = await userModel.create(data)
+        sendEmail('signup', user)
+        if (user) {
+            res.json({
+                message: 'user  added successfull',
+                data: user
+            })
+        } else {
+            throw new Error('Signup failed')
+        }
+    } catch (err) {
+        res.status(500).json({
+            err: err.message
+        })
+    }
 }
 
 module.exports.forgotPassword = async function(req, res) {
@@ -100,6 +112,10 @@ module.exports.forgotPassword = async function(req, res) {
             const resetToken = user.createResetToken()
             const resetLink = `${req.protocol}://${req.getHost}/reset_password/${resetToken}`
                 // send email link to user
+            sendEmail('resetPassword', {
+                resetPasswordLink: resetLink,
+                email: email
+            })
             res.json({
                 message: 'email not register'
             })

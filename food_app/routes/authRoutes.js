@@ -4,7 +4,8 @@ const {
     login,
     getSignUp,
     postSignUp,
-    loginView
+    loginView,
+    forgotPassword
 } = require('../controller/authController')
 
 // auth route
