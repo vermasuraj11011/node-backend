@@ -88,3 +88,13 @@ module.exports.deleteUser = async function deleteUser(req, res) {
         })
     }
 }
+
+module.exports.uploadImage = function(req, res) {
+    res.json({
+        message: 'file uploaded successfully'
+    })
+}
+
+module.exports.uploadImageView = function(req, res) {
+    res.sendFile('/home/suraj/Documents/node/node_backend/views/uploadImage.html')
+}

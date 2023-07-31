@@ -1,12 +1,14 @@
 const express = require('express')
+const multer = require('multer')
 const {
     getUsers,
-    // postUser,
     updateUser,
     deleteUser,
     getCookies,
     setCookies,
-    getUser
+    getUser,
+    uploadImage,
+    uploadImageView
 } = require('../controller/userController')
 const userRoute = express.Router()
 const {
@@ -17,14 +19,32 @@ const {
     resetPassword
 } = require('../controller/authController')
 
+const multerStorage = multer.diskStorage({
+    destination: function(req, file, callBackFunc) {
+        callBackFunc(null, '/home/suraj/Documents/node/node_backend/public/image')
+    },
+    filename: function(req, file, callBackFunc) {
+        callBackFunc(null, `user-${Date.now()}.jpeg`)
+    }
+})
 
-// user route
-// userRoute
-//     .route('/')
-// .post(postUser)
-// .get(getUsers)
-// .patch(updateUser)
-// .delete(deleteUser)
+const filter = function(req, file, callBackFunc) {
+    if (file.mimetype.startsWith('image')) {
+        callBackFunc(null, true)
+    } else {
+        callBackFunc(new Error('File type should be of Image'))
+    }
+}
+
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: filter
+})
+
+userRoute.route('/uploadImage')
+    .get(uploadImageView)
+    // .post(upload.single('photo'), uploadImage)
+userRoute.post('/uploadImage', upload.single('photo'), uploadImage)
 
 userRoute
     .route('/getCookies')
