@@ -1,6 +1,6 @@
 const userModel = require('../models/userModel.js')
 const jwt = require('jsonwebtoken')
-const JWT_KEY = require('../../secrete.js')
+const secrete = require('../../secrete.js')
 
 module.exports.isAuthorize = function isAuthorize(roles) {
     return function(req, res, next) {
@@ -19,7 +19,7 @@ module.exports.isAuthorize = function isAuthorize(roles) {
 module.exports.protectRoute = async function protectRoute(req, res, next) {
     const token = req.cookies.token
     if (token) {
-        const payload = jwt.verify(token, JWT_KEY.JWT_KEY)
+        const payload = jwt.verify(token, secrete.JWT_KEY)
         if (payload) {
             const user = await userModel.findById(payload.payload)
                 // console.log(user)
@@ -42,6 +42,10 @@ module.exports.protectRoute = async function protectRoute(req, res, next) {
     }
 }
 
+module.exports.loginView = async function loginView(req, res) {
+    res.sendFile('/home/suraj/Documents/node/node_backend/views/login.html')
+}
+
 module.exports.login = async function login(req, res) {
     const data = req.body
     if (data.email) {
@@ -50,7 +54,7 @@ module.exports.login = async function login(req, res) {
             if (data.password === user.password) {
                 const user_id = user['_id']
                     // console.log(JWT_KEY)
-                const token = jwt.sign({ payload: user_id }, JWT_KEY.JWT_KEY)
+                const token = jwt.sign({ payload: user_id }, secrete.JWT_KEY)
                     // console.log(token)
                 res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 24, secure: true, httpOnly: true })
                 res.json({
@@ -132,7 +136,7 @@ module.exports.logout = async function(req, res) {
     try {
         const token = req.cookies.token
         if (token) {
-            const payload = jwt.verify(token, JWT_KEY.JWT_KEY)
+            const payload = jwt.verify(token, secrete.JWT_KEY)
             if (payload) {
                 const user = await userModel.findById(payload.payload)
                 if (user) {

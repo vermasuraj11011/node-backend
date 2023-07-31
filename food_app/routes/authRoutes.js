@@ -3,7 +3,8 @@ const authRoute = express.Router()
 const {
     login,
     getSignUp,
-    postSignUp
+    postSignUp,
+    loginView
 } = require('../controller/authController')
 
 // auth route
@@ -14,6 +15,7 @@ authRoute
 
 authRoute
     .route('/login')
+    .get(loginView)
     .post(login)
 
 

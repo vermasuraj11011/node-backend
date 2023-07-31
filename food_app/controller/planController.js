@@ -1,4 +1,3 @@
-const { json } = require('express')
 const planModel = require('../models/planModel')
 
 module.exports.allPlans = async function allPlans(req, res) {

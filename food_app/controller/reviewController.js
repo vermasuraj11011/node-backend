@@ -1,7 +1,7 @@
 const reviewModel = require('../models/reviewModel')
 const planModel = require('../models/planModel')
 const jwt = require('jsonwebtoken')
-const JWT_KEY = require('../../secrete.js')
+const secrete = require('../../secrete.js')
 
 module.exports.allReview = async function allReview(req, res) {
     try {
@@ -49,7 +49,7 @@ module.exports.createReview = async function(req, res) {
         if (plan) {
             const token = req.cookies.token
             if (token) {
-                const userId = jwt.verify(token, JWT_KEY.JWT_KEY)
+                const userId = jwt.verify(token, secrete.JWT_KEY)
                 console.log(userId)
                 if (userId) {
                     let review = {
