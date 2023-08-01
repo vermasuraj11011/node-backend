@@ -2,7 +2,12 @@ const express = require('express')
 const app = express();
 const cookieParser = require('cookie-parser')
 
-app.listen(3000)
+const port = process.env.PORT || 5000
+app.listen(port, function() {
+    console.log(`App listerning to the fort ${port}`)
+})
+
+
 app.use(express.json())
 app.use(cookieParser())
 
